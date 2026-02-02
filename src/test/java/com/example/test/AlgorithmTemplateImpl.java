@@ -4,7 +4,8 @@ import java.util.*;
 
 public class AlgorithmTemplateImpl {
 
-    /* ===========================
+    /*
+     * ===========================
      * 1. 누적합 / 차이 배열 계열
      * ===========================
      */
@@ -20,12 +21,12 @@ public class AlgorithmTemplateImpl {
         int[] ps = new int[n + 1];
 
         ps[0] = 0;
-
-        for (int i = 1; i < n + 1; i++) {
+        for (int i = 1; i < ary.length; i++) {
             ps[i] = ps[i - 1] + ary[i - 1];
         }
 
         return ps;
+
     }
 
     // 2D Prefix Sum
@@ -34,6 +35,7 @@ public class AlgorithmTemplateImpl {
     // 사용처: 직사각형 구간합 O(1)
     static int[][] prefixSum2D(int[][] board) {
         // TODO: ps 배열 만들고, 행/열 돌면서 점화식으로 채우기
+
         int r = board.length;
         int c = board[0].length;
 
@@ -41,11 +43,11 @@ public class AlgorithmTemplateImpl {
 
         for (int i = 1; i < r + 1; i++) {
             for (int j = 1; j < c + 1; j++) {
-                ps[i][j] = board[i - 1][j - 1] + ps[i][j - 1] + ps[i - 1][j] - ps[i - 1][j - 1];
+
             }
         }
 
-        return ps;
+        return null;
     }
 
     // 1D Difference Array (차이 배열)
@@ -59,7 +61,8 @@ public class AlgorithmTemplateImpl {
         // updates: {l, r, val} 의 리스트라고 가정
         // TODO: diff 배열 만들고, diff[l] += val, diff[r+1] -= val 후 prefix
 
-        if (n == 0) return new int[0];
+        if (n == 0)
+            return new int[0];
 
         int[] diff = new int[n];
 
@@ -84,18 +87,18 @@ public class AlgorithmTemplateImpl {
         }
 
         /*
-        int cur = 0;
-        for (int i = 0; i < n; i++) {
-            cur += diff[i];
-            ary[i] = cur;
-        }
-        */
+         * int cur = 0;
+         * for (int i = 0; i < n; i++) {
+         * cur += diff[i];
+         * ary[i] = cur;
+         * }
+         */
 
         return ary;
     }
 
-
-    /* ===========================
+    /*
+     * ===========================
      * 2. 그래프: BFS / DFS / Grid
      * ===========================
      */
@@ -108,7 +111,8 @@ public class AlgorithmTemplateImpl {
         // 1. 현재 노드 방문 처리
         // 2. 인접 노드 돌면서 방문 안했으면 재귀 호출
 
-        if (visited[start]) return;
+        if (visited[start])
+            return;
 
         visited[start] = true;
 
@@ -169,14 +173,14 @@ public class AlgorithmTemplateImpl {
             Arrays.fill(visited[i], -1);
         }
 
-        int[] dr = new int[] {1, -1, 0, 0};
-        int[] dc = new int[] {0, 0, 1, -1};
+        int[] dr = new int[] { 1, -1, 0, 0 };
+        int[] dc = new int[] { 0, 0, 1, -1 };
 
         Deque<int[]> dq = new ArrayDeque<>();
-        dq.add(new int[] {sr, sc});
+        dq.add(new int[] { sr, sc });
         visited[sr][sc] = 0;
 
-        while(!dq.isEmpty()) {
+        while (!dq.isEmpty()) {
             int[] cur = dq.poll();
             int curR = cur[0];
             int curC = cur[1];
@@ -185,10 +189,11 @@ public class AlgorithmTemplateImpl {
                 int nR = curR + dr[d];
                 int nC = curC + dc[d];
 
-                if (nR < 0 || nR >= r || nC < 0 || nC >= c) continue;
+                if (nR < 0 || nR >= r || nC < 0 || nC >= c)
+                    continue;
                 if (visited[nR][nC] == -1) {
                     visited[nR][nC] = visited[curR][curC] + 1;
-                    dq.add(new int[] {nR, nC});
+                    dq.add(new int[] { nR, nC });
                 }
             }
         }
@@ -208,7 +213,8 @@ public class AlgorithmTemplateImpl {
         int size = 1;
 
         for (int next : tree[cur]) {
-            if (next == parent) continue;
+            if (next == parent)
+                continue;
 
             size += dfsSubtreeSize(next, cur, tree, subtreeSize);
         }
@@ -217,27 +223,28 @@ public class AlgorithmTemplateImpl {
         return size;
     }
 
-        /* ===========================
+    /*
+     * ===========================
      * 1. MST - Prim 알고리즘
      * ===========================
      */
 
     // Prim MST (PriorityQueue 사용, 인접 리스트)
     // input :
-    //   n : 정점 개수 (0 ~ n-1)
-    //   graph[u] : {v, w} 형태의 간선 (무방향, 양수 가중치)
+    // n : 정점 개수 (0 ~ n-1)
+    // graph[u] : {v, w} 형태의 간선 (무방향, 양수 가중치)
     // output :
-    //   MST의 총 가중치 (연결 안돼 있으면 -1 같은거 리턴)
+    // MST의 총 가중치 (연결 안돼 있으면 -1 같은거 리턴)
     static long primMST(int n, int start, List<int[]>[] graph) {
         // TODO:
         // 1. visited[n] = false 로 초기화
         // 2. pq : (weight, node) 오름차순
         // 3. 시작점을 0이라고 치고, pq에 (0, 0) 넣기
         // 4. pq에서 하나씩 꺼내서:
-        //    - 이미 방문이면 continue
-        //    - 방문 처리하고, 그 간선 가중치 더하기
-        //    - 해당 정점에서 뻗어나가는 간선들 중
-        //      아직 방문 안 된 정점들 pq에 push
+        // - 이미 방문이면 continue
+        // - 방문 처리하고, 그 간선 가중치 더하기
+        // - 해당 정점에서 뻗어나가는 간선들 중
+        // 아직 방문 안 된 정점들 pq에 push
         // 5. 방문한 정점 수가 n개가 아니면 MST 불가
 
         boolean[] visited = new boolean[n];
@@ -245,21 +252,22 @@ public class AlgorithmTemplateImpl {
         int visitedCnt = 0;
 
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
-        pq.add(new int[] {0, start});
+        pq.add(new int[] { 0, start });
 
         while (!pq.isEmpty()) {
             int[] cur = pq.poll();
             int w = cur[0];
             int u = cur[1];
 
-            if (visited[u]) continue;
+            if (visited[u])
+                continue;
             visited[u] = true;
             visitedCnt++;
             total += w;
 
             for (int[] next : graph[u]) {
                 if (visited[next[0]]) {
-                    pq.add(new int[] {next[1], next[0]});
+                    pq.add(new int[] { next[1], next[0] });
                 }
             }
         }
@@ -271,25 +279,25 @@ public class AlgorithmTemplateImpl {
         return total;
     }
 
-
-    /* ===========================
+    /*
+     * ===========================
      * 2. MST - Kruskal 알고리즘
      * ===========================
      */
 
     // Kruskal MST
     // input :
-    //   n : 정점 개수
-    //   edges : {u, v, w} 리스트 (무방향)
+    // n : 정점 개수
+    // edges : {u, v, w} 리스트 (무방향)
     // output :
-    //   MST 총 가중치 (연결 안돼 있으면 -1 등)
+    // MST 총 가중치 (연결 안돼 있으면 -1 등)
     static long kruskalMST(int n, int[][] edges) {
         // TODO:
         // 1. edges를 w 기준 오름차순 정렬
         // 2. Union-Find 준비
         // 3. 작은 간선부터 차례대로:
-        //    - union(u, v)가 성공(=원래 다른 집합)이면
-        //      -> MST에 포함, weight 더하기, 사용한 간선 수 증가
+        // - union(u, v)가 성공(=원래 다른 집합)이면
+        // -> MST에 포함, weight 더하기, 사용한 간선 수 증가
         // 4. 사용한 간선 수가 n-1이 아니면 MST 불가
 
         Arrays.sort(edges, (a, b) -> Integer.compare(a[2], b[2]));
@@ -310,19 +318,22 @@ public class AlgorithmTemplateImpl {
             if (find(u, parent) != find(v, parent)) {
                 union(u, v, parent);
                 total += w;
-                used ++;
+                used++;
             }
 
-            if (used == n - 1) break;
+            if (used == n - 1)
+                break;
         }
 
-        if (used != n - 1) return -1;
+        if (used != n - 1)
+            return -1;
 
         return total;
     }
 
     static int find(int x, int[] parent) {
-        if (x == parent[x]) return x;
+        if (x == parent[x])
+            return x;
         parent[x] = find(x, parent);
         return parent[x];
     }
@@ -338,54 +349,56 @@ public class AlgorithmTemplateImpl {
         }
     }
 
-    /* ===========================
+    /*
+     * ===========================
      * 3. Bellman-Ford
-     *    (단일 시작점 최단거리, 음수 간선 가능)
+     * (단일 시작점 최단거리, 음수 간선 가능)
      * ===========================
      */
 
     // Bellman-Ford
     // input :
-    //   n : 정점 개수
-    //   edges : {u, v, w} 방향 간선 리스트
-    //   start : 시작 정점
+    // n : 정점 개수
+    // edges : {u, v, w} 방향 간선 리스트
+    // start : 시작 정점
     // output :
-    //   dist 배열 (음의 사이클에 의해 더 줄어들 수 있으면 표시 필요)
+    // dist 배열 (음의 사이클에 의해 더 줄어들 수 있으면 표시 필요)
     static long[] bellmanFord(int n, int[][] edges, int start) {
         // TODO:
         // 1. dist 모두 INF, dist[start] = 0
         // 2. (n-1)번:
 
-        //    for (각 간선 u,v,w)
-        //      dist[v] > dist[u] + w 이면 갱신
+        // for (각 간선 u,v,w)
+        // dist[v] > dist[u] + w 이면 갱신
 
         // 3. 한 번 더 전체 간선 돌면서
-        //    여전히 갱신이 일어나면 음수 사이클 영향 있음을 체크
+        // 여전히 갱신이 일어나면 음수 사이클 영향 있음을 체크
         return null;
     }
 
-
-    /* ===========================
+    /*
+     * ===========================
      * 4. Floyd-Warshall
-     *    (모든 쌍 최단거리, n <= ~200 정도에서)
+     * (모든 쌍 최단거리, n <= ~200 정도에서)
      * ===========================
      */
 
     // Floyd-Warshall
     // input :
-    //   n : 정점 개수
-    //   dist[i][j] : 초기 거리 (없으면 INF, 자기 자신은 0)
+    // n : 정점 개수
+    // dist[i][j] : 초기 거리 (없으면 INF, 자기 자신은 0)
     // output :
-    //   dist[i][j] = i->j 최단거리 (음수 사이클 체크는 별도)
+    // dist[i][j] = i->j 최단거리 (음수 사이클 체크는 별도)
     static void floydWarshall(int n, long[][] dist) {
         // TODO:
         // for k=0..n-1
-        //   for i=0..n-1
-        //     for j=0..n-1
-        //       dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+        // for i=0..n-1
+        // for j=0..n-1
+        // dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
     }
 
-    /* ===========================
+    /*
+     * ===========================
      * 3. 최단거리 / 위상정렬 / 유니온파인드
      * ===========================
      */
@@ -414,8 +427,8 @@ public class AlgorithmTemplateImpl {
         return null;
     }
 
-
-    /* ===========================
+    /*
+     * ===========================
      * 4. 백트래킹(조합/순열/부분집합)
      * ===========================
      */
@@ -427,7 +440,18 @@ public class AlgorithmTemplateImpl {
         // TODO:
         // 1. path.size() == k 이면 result에 copy 추가 후 return
         // 2. i = start ~ ary.length-1 돌면서
-        //    - path에 ary[i] 추가 -> 재귀 -> 다시 제거
+        // - path에 ary[i] 추가 -> 재귀 -> 다시 제거
+
+        if (path.size() == k) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = start; i < ary.length; i++) {
+            path.add(ary[i]);
+            combine(ary, k, start + 1, path, result);
+            path.remove(path.size() - 1);
+        }
     }
 
     // 순열 (ary 전체 순열)
@@ -449,8 +473,8 @@ public class AlgorithmTemplateImpl {
         // 3. "고르는" 경우 path에 넣고 재귀, 이후 제거
     }
 
-
-    /* ===========================
+    /*
+     * ===========================
      * 5. DP 패턴 (1D, 2D, 비트마스크)
      * ===========================
      */
@@ -491,8 +515,8 @@ public class AlgorithmTemplateImpl {
         return 0;
     }
 
-
-    /* ===========================
+    /*
+     * ===========================
      * 6. 수학 / 비트 / 이진 탐색 응용
      * ===========================
      */
@@ -545,15 +569,15 @@ public class AlgorithmTemplateImpl {
     static int binarySearchOnAnswer(int lo, int hi) {
         // TODO:
         // while (lo < hi) {
-        //   mid = (lo+hi)/2;
-        //   if (check(mid)) hi = mid;  // or lo = mid+1;
-        //   else lo = mid+1;          // or hi = mid;
+        // mid = (lo+hi)/2;
+        // if (check(mid)) hi = mid; // or lo = mid+1;
+        // else lo = mid+1; // or hi = mid;
         // }
         return 0;
     }
 
-
-    /* ===========================
+    /*
+     * ===========================
      * 7. Two Pointers / Sliding Window 응용
      * ===========================
      */
@@ -566,8 +590,8 @@ public class AlgorithmTemplateImpl {
         // 1. left=0, right=n-1
         // 2. sum = ary[left] + ary[right]
         // 3. sum < target -> left++
-        //    sum > target -> right--
-        //    sum == target -> 정답 처리 후 중복 처리
+        // sum > target -> right--
+        // sum == target -> 정답 처리 후 중복 처리
         return 0;
     }
 

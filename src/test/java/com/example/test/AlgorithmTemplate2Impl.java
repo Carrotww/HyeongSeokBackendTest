@@ -17,7 +17,8 @@ public class AlgorithmTemplate2Impl {
     // Output: int[] ps (누적합 배열, 길이 n+1)
     static int[] prefixSum1D(int[] arr) {
         // TODO: ps[0] = 0으로 초기화, i=1..n에 대해 ps[i] 계산 (ps[i] = ps[i-1] + arr[i-1])
-        return new int[arr.length + 1];
+
+        return null;
     }
 
     // Problem: 2D Prefix Sum
@@ -37,21 +38,8 @@ public class AlgorithmTemplate2Impl {
     // Output: int[] result (업데이트 적용 후 최종 배열 값들, 길이 n)
     static int[] differenceArray(int n, int[][] updates) {
         // TODO: diff 배열을 활용하여 각 업데이트를 반영하고, 최종적으로 prefix sum을 적용해 결과 배열 계산
-        if (n <= 0) return new int[0];
-        // diff 배열 초기화
-        int[] diff = new int[n];
-        // 각 업데이트 적용 (차이 배열에 표시)
-        for (int[] upd : updates) {
-            int l = upd[0], r = upd[1], val = upd[2];
-            diff[l] += val;
-            if (r + 1 < n) {
-                diff[r + 1] -= val;
-            }
-        }
-        // 차이 배열을 prefix sum하여 결과 배열 생성
-        int[] result = new int[n];
-        // TODO: diff를 누적하여 result 채우기
-        return result;
+
+        return null;
     }
 
 
