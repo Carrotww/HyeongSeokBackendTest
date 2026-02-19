@@ -1,6 +1,13 @@
 package com.example.test;
 
+import java.beans.Transient;
 import java.util.*;
+
+import org.junit.jupiter.api.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class A1_WarmupBasics {
 
@@ -16,7 +23,29 @@ public class A1_WarmupBasics {
     // Output: Map<Integer, Integer> freq
     static Map<Integer, Integer> countFrequencies(int[] arr) {
         // TODO: HashMap으로 카운팅
-        return new HashMap<>();
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int a : arr) {
+            map.put(a, map.getOrDefault(a, 0) + 1);
+        }
+
+        return map;
+    }
+
+    @Test
+    void countFrequenciesTest() {
+        int[] ar = new int[] { 1, 1, 3, 3, 3, 2, 5, 6, 7, 7, 7, 7 };
+
+        Map<Integer, Integer> map = countFrequencies(ar);
+
+        assertAll(
+                () -> assertThat(map, hasEntry(1, 2)),
+                () -> assertThat(map, hasEntry(2, 1)),
+                () -> assertThat(map, hasEntry(3, 3)),
+                () -> assertThat(map, hasEntry(5, 1)),
+                () -> assertThat(map, hasEntry(6, 1)),
+                () -> assertThat(map, hasEntry(7, 4)));
     }
 
     // Problem: Two Sum (indices)
@@ -25,7 +54,29 @@ public class A1_WarmupBasics {
     // Output: int[] {i, j}
     static int[] twoSumIndices(int[] arr, int target) {
         // TODO: HashMap(value -> index)
-        return new int[]{-1, -1};
+
+        // 정렬을 하지 못하니까 map 으로 진행
+        Map<Integer, Integer> map = new HashMap<>();
+        // target - value, index
+
+        for (int i = 0; i < arr.length; i++) {
+            if (map.containsKey(arr[i])) {
+                return new int[] {map.get(arr[i]), i};
+            }
+            map.put(target - arr[i], i);
+        }
+        return new int[] { -1, -1 };
+    }
+
+    @Test
+    void twoSumIndicesTest() {
+        int[] ary = new int[] { 2, 9, 2, 11, 4, 99 };
+        assertAll(
+                () -> assertArrayEquals(new int[] { 3, 5 }, twoSumIndices(ary, 110)),
+                () -> assertArrayEquals(new int[] { 0, 2 }, twoSumIndices(ary, 4)),
+                () -> assertArrayEquals(new int[] { -1, -1 }, twoSumIndices(ary, 1)),
+                () -> assertArrayEquals(new int[] { 0, 1 }, twoSumIndices(new int[] { 3, 3 }, 6)),
+                () -> assertArrayEquals(new int[] { -1, -1 }, twoSumIndices(new int[] { 5 }, 5)));
     }
 
     // Problem: Reverse String
