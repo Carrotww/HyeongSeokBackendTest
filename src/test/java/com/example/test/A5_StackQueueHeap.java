@@ -26,18 +26,7 @@ public class A5_StackQueueHeap {
     // Output: int[] nge
     // solve (1) : 0518
     static int[] nextGreaterElement(int[] arr) {
-        int[] result = new int[arr.length];
-        Arrays.fill(result, -1);
-        Deque<Integer> stack = new ArrayDeque<>();
-
-        for (int i = 0; i < arr.length; i++) {
-            while (!stack.isEmpty() && arr[stack.peek()] < arr[i]) {
-                result[stack.pop()] = arr[i];
-            }
-            stack.push(i);
-        }
-
-        return result;
+        return new int[arr.length];
     }
 
     // Problem: Monotonic Stack - Largest Rectangle in Histogram
