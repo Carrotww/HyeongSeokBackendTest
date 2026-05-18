@@ -1,6 +1,7 @@
 package com.example.test;
 
 import java.util.*;
+import java.util.function.*;
 
 public class A4_SortSearch {
 
@@ -16,7 +17,20 @@ public class A4_SortSearch {
     // Output: int idx
     static int lowerBound(int[] arr, int target) {
         // TODO
-        return 0;
+        int left = 0;
+        int right = arr.length;
+
+        while (left < right) {
+            int mid = (right - left) / 2 + left;
+
+            if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        return left;
     }
 
     // Problem: Upper Bound
@@ -25,7 +39,20 @@ public class A4_SortSearch {
     // Output: int idx
     static int upperBound(int[] arr, int target) {
         // TODO
-        return 0;
+
+        int left = 0;
+        int right = arr.length;
+
+        while (left < right) {
+            int mid = (right - left) / 2 + left;
+
+            if (arr[mid] <= target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        return left;
     }
 
     // Problem: Binary Search - exact
@@ -34,6 +61,22 @@ public class A4_SortSearch {
     // Output: int idx
     static int binarySearchExact(int[] arr, int target) {
         // TODO
+
+        int left = 0;
+        int right = arr.length - 1;
+
+        while (left <= right) {
+            int mid = (right - left) / 2 + left;
+
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
         return -1;
     }
 
@@ -43,7 +86,24 @@ public class A4_SortSearch {
     // Output: int best
     static int parametricSearchExample(int lo, int hi) {
         // TODO: while (lo<=hi) { mid; if (feasible) ... }
-        return 0;
+        return parametricSearch(lo, hi, mid -> mid >= 0);
+    }
+
+    static int parametricSearch(int lo, int hi, IntPredicate func) {
+        int result = hi + 1;
+
+        while (lo < hi) {
+            int mid = (hi - lo) / 2 + lo;
+
+            if (func.test(mid)) {
+                result = mid;
+                hi = mid - 1;
+            } else {
+                lo = mid + 1;
+            }
+        }
+
+        return result;
     }
 
     // Problem: Sort with Custom Comparator
@@ -52,6 +112,9 @@ public class A4_SortSearch {
     // Output: List<int[]> sorted
     static List<int[]> sortPairs(List<int[]> pairs) {
         // TODO: Collections.sort with comparator
+
+        pairs.sort(Comparator.comparingInt((int[] x) -> x[0]).thenComparingInt((int[] x) -> x[1]));
+
         return pairs;
     }
 

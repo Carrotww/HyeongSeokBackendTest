@@ -12,33 +12,55 @@ public class A4_SortSearchImpl {
      */
 
     static int lowerBound(int[] arr, int target) {
-        int lo = 0, hi = arr.length; // [lo, hi)
-        while (lo < hi) {
-            int mid = (lo + hi) >>> 1;
-            if (arr[mid] >= target) hi = mid;
-            else lo = mid + 1;
+        int left = 0;
+        int right = arr.length;
+
+        while (left < right) {
+            int mid = (right - left) / 2 + left;
+
+            if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
         }
-        return lo;
+
+        return left;
     }
 
     static int upperBound(int[] arr, int target) {
-        int lo = 0, hi = arr.length;
-        while (lo < hi) {
-            int mid = (lo + hi) >>> 1;
-            if (arr[mid] > target) hi = mid;
-            else lo = mid + 1;
+        int left = 0;
+        int right = arr.length;
+
+        while (left < right) {
+            int mid = (right - left) / 2 + left;
+
+            if (arr[mid] <= target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
         }
-        return lo;
+
+        return left;
     }
 
     static int binarySearchExact(int[] arr, int target) {
-        int lo = 0, hi = arr.length - 1;
-        while (lo <= hi) {
-            int mid = (lo + hi) >>> 1;
-            if (arr[mid] == target) return mid;
-            if (arr[mid] < target) lo = mid + 1;
-            else hi = mid - 1;
+        int left = 0;
+        int right = arr.length - 1;
+
+        while (left <= right) {
+            int mid = (right - left) / 2 + left;
+
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
         }
+
         return -1;
     }
 

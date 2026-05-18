@@ -14,18 +14,30 @@ public class A5_StackQueueHeap {
     // Description: 괄호 문자열 s가 올바른 괄호인지 판별
     // Input: String s
     // Output: boolean
+    // solve (1) : 0518
     static boolean validParentheses(String s) {
         // TODO: Stack<Character>
-        return false;
+        return true;
     }
 
     // Problem: Next Greater Element (for each element)
-    // Description: 각 원소에 대해 오른쪽에서 처음 만나는 더 큰 값을 배열로 반환. 없으면 -1.
+    // Description: 각 원소에 대해 오른쪽에서 처음 만나는 더 큰 값을 배열로 반환. 없으면 -1. O(N) 풀이
     // Input: int[] arr
     // Output: int[] nge
+    // solve (1) : 0518
     static int[] nextGreaterElement(int[] arr) {
-        // TODO: monotonic stack
-        return new int[arr.length];
+        int[] result = new int[arr.length];
+        Arrays.fill(result, -1);
+        Deque<Integer> stack = new ArrayDeque<>();
+
+        for (int i = 0; i < arr.length; i++) {
+            while (!stack.isEmpty() && arr[stack.peek()] < arr[i]) {
+                result[stack.pop()] = arr[i];
+            }
+            stack.push(i);
+        }
+
+        return result;
     }
 
     // Problem: Monotonic Stack - Largest Rectangle in Histogram
